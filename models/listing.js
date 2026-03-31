@@ -9,8 +9,8 @@ const listingSchema = new Schema({
     description: String,
     images: {
         type: String,
-        default: "https://in.pinterest.com/pin/871798440377323170/",
-        set: (v) => v === "" ? "https://in.pinterest.com/pin/871798440377323170/" : v,
+        default: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+        set: (v) => v === "" ? "https://images.unsplash.com/photo-1507525428034-b723cf961d3e" : v,
     },
     price: Number,
     location: String,

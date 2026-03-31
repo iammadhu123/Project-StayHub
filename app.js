@@ -45,6 +45,11 @@ app.get('/listings/new', async (req, res) => {
 //Show Route
 app.get('/listings/:id', async (req, res) => {
     let {id} = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.send("Invalid ID ❌");
+    }
+
     const listing = await Listing.findById(id);
 
     console.log("Listing:", listing); // 👈 debug
@@ -67,6 +72,12 @@ app.post('/listings', async (req, res) => {
 //Edit Route
 app.get('/listings/:id/edit', async (req, res) => {
     let {id} = req.params;
+
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.send("Invalid ID ❌");
+    }
+
     const listing = await Listing.findById(id);
     res.render("listings/edit.ejs", { listing })
 })
