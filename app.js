@@ -5,6 +5,9 @@ const Listing = require('./models/listing.js');
 const path = require('path'); // ejs files are in views folder
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
+const wrapAsync = require('./utils/wrapAsync.js');
+const ExpressError = require('./utils/ExpressError.js');
+const { listingSchema } = require('./schema.js');
 
 const MONGO_URL = 'mongodb://localhost:27017/wanderlust';
 
@@ -31,11 +34,21 @@ app.get('/', (req, res) => {
     res.send('Hi, I am root');
 });
 
+const validateListing = (req, res, next) => {
+    let {error} = listingSchema.validate(req.body);
+    if(error) {
+        let errMsg = error.details.map((el) => el.message).join(",")
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }
+}
+
 //Index page to show all listings //Index Route
-app.get('/listings', async (req, res) => {
+app.get('/listings', wrapAsync (async (req, res) => {
     const allListings = await Listing.find({});
     res.render("listings/index",  {allListings});
-})
+}));
 
 //NEW ROUTE
 app.get('/listings/new', async (req, res) => {
@@ -43,59 +56,64 @@ app.get('/listings/new', async (req, res) => {
 })
 
 //Show Route
-app.get('/listings/:id', async (req, res) => {
+
+app.get('/listings/:id', wrapAsync (async (req, res) => {
     let {id} = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.send("Invalid ID ❌");
-    }
-
     const listing = await Listing.findById(id);
+    res.render("listings/show.ejs", {listing});
+})); //or
 
-    console.log("Listing:", listing); // 👈 debug
+// app.get('/listings/:id', async (req, res) => {
+//     let {id} = req.params;
 
-    if (!listing) {
-        return res.send("Listing not found ❌");  // ya redirect bhi kar sakte ho
-    }
+//     if (!mongoose.Types.ObjectId.isValid(id)) {
+//         return res.send("Invalid ID ❌");
+//     }
 
-    res.render("listings/show", {listing});
-})
+//     const listing = await Listing.findById(id);
+
+//     console.log("Listing:", listing); // 👈 debug
+
+//     if (!listing) {
+//         return res.send("Listing not found ❌");  // ya redirect bhi kar sakte ho
+//     }
+
+//     res.render("listings/show", {listing});
+// })
 
 //Create Route
-app.post('/listings', async (req, res) => {
+app.post('/listings', validateListing,  wrapAsync (async (req, res, next) => {
     // let {title, description, image, price, location, country} = req.body;
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     res.redirect('/listings');
-})
+
+}));
 
 //Edit Route
-app.get('/listings/:id/edit', async (req, res) => {
-    let {id} = req.params;
-
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.send("Invalid ID ❌");
-    }
-
+app.get('/listings/:id/edit', wrapAsync (async (req, res) => {
+    let { id } = req.params;
     const listing = await Listing.findById(id);
-    res.render("listings/edit.ejs", { listing })
-})
+    res.render('listings/edit', {listing});
+}));
 
 //Update Route
-app.put('/listings/:id', async (req, res) => {
+app.put('/listings/:id', validateListing, wrapAsync (async (req, res) => {
+    // if(!req.body.listing) {
+    //     throw new ExpressError(400, "Send valid data for listing");
+    // }
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, {...req.body.listing});
     res.redirect(`/listings/${id}`);
-})
+}));
 
 //DELETE ROUTE
-app.delete('/listings/:id', async (req,res) => {
+app.delete('/listings/:id', wrapAsync (async (req,res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);
     res.redirect('/listings');
-})
+}));
 
 // app.get('/testListing', async (req,res) => {
 //     let sampleListing = new Listing({
@@ -111,7 +129,23 @@ app.delete('/listings/:id', async (req,res) => {
 //     res.send("Sample listing created and saved to the database.");
 // })
 
+// 404 handler => jab koi route match nahi karta tab ye chalega
+app.use((req, res, next) => {
+  next(new ExpressError(404, "Page NotFound!"));
+});
+
+//Error Handler
+// app.use((err, req, res, next) => {
+//     console.log("something went wrong!")
+// });
+
+//custom error handler
+app.use((err, req, res, next) => {
+    let { statusCode = 500, message = 'Oh No, Something went wrong!' } = err;
+    res.status(statusCode).render("error.ejs", {message});
+    // res.status(statusCode).send(message);
+});
+
 app.listen(8080, () => {
     console.log('Server is running on port 8080');
 });
-
