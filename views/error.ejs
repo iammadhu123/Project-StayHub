@@ -1,8 +1,13 @@
-<% layout("/layouts/boilerplate") %>
+<% layout('/layouts/boilerplate') %>
 
 <div class="row mt-3">
-    <div class="alert alert-danger col-6 offset-3" role="alert">
-        <!-- <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg> -->
-        <p class="alert-heading">{ <%= message %> }</p>
+    <div class="col-8 offset-2">
+        <h3>Oops! Something went wrong!</h3>
+        <%- include('includes/flash') %>
+        <p><%= message %></p>
+        <a href="/" class="btn btn-primary">Go Home</a>
+        <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
     </div>
 </div>
+
+
