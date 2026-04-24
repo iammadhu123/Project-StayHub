@@ -1,6 +1,30 @@
+<style>
+  .search-btn {
+    background-color: #fe424d;
+    color: #fff;
+    border-radius: 25px;
+    padding: 0 1rem 0 1rem;
+  }
+  .search-btn:hover {
+    background-color: #fe424d;
+    color: #fff;
+  }
+
+  .search-btn i {
+    display: inline;
+    margin-right: 0.5rem;
+  }
+
+  .search-inp {
+    border-radius: 25px;
+    padding: 0.5rem 3rem 0.5rem 3rem;
+    font-size: 1rem;
+  }
+</style>
+
 <nav class="navbar navbar-expand-md bg-light border-bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand" href="/listings">
       <i class="fa-regular fa-compass"></i>
     </a>
     <button 
@@ -13,16 +37,23 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" href="/">Home</a>
-        <a class="nav-link" href="/listings">All Listings</a>
-        <a class="nav-link" href="/listings/new">Add New Listing</a>
+        <a class="nav-link" href="/listings">Explore</a>
       </div>
       <div class="navbar-nav ms-auto">
+        <form class="d-flex" role="search">
+          <input class="form-control  me-2 search-inp" type="search" placeholder="Search detinations">
+          <button class="btn search-btn" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>Search
+          </button>
+        </form>
+      </div>
+      <div class="navbar-nav ms-auto">
+       <a class="nav-link" href="/listings/new">Airbnb your home</a>
       <% if(!currUser) { %>
-        <a class="nav-link" href="/signup">SignUp</a>
-        <a class="nav-link" href="/login">Login</a>
+        <a class="nav-link" href="/signup"><b>SignUp</b></a>
+        <a class="nav-link" href="/login"><b>Login</b></a>
         <% } else { %>
-        <a class="nav-link" href="/logout">LogOut</a>
+        <a class="nav-link" href="/logout"><b>LogOut</b></a>
         <% } %>
       </div>
     </div>

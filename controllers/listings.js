@@ -29,35 +29,93 @@ module.exports.showListing = async (req, res) => {
     res.render("listings/show.ejs", { listing });
 };
 
+// module.exports.createListing = async (req, res) => {
+//     try {
+//         console.log("[createListing] req.body:", req.body);
+//         console.log("[createListing] req.file:", req.file);
+//         console.log("[createListing] req.user:", req.user);
+//         const newListing = new Listing(req.body.listing);
+//         newListing.Owner = req.user._id;
+//         if (req.file) {
+//             newListing.images = { 
+//                 url: req.file.path, 
+//                 filename: req.file.filename 
+//             };
+//         }
+//         await newListing.save();
+//         console.log(`New listing created: ${newListing._id}`);
+//         console.log(`Image URL: ${newListing.images?.url}`);
+//         req.flash("success", "New listing created!");
+//         res.redirect(`/listings/${newListing._id}`);
+//     } catch (e) {
+//         console.error("Create listing error:", e);
+//         req.flash("error", "Failed to create listing!");
+//         res.redirect("/listings/new");
+//     }
+// };
+
 module.exports.createListing = async (req, res, next) => {
-    // let {title, description, image, price, location, country} = req.body;
+    let url = req.file.path;
+    let filename = req.file.filename;
+
     const newListing = new Listing(req.body.listing);
-    // console.log(req.user);
-    
     newListing.Owner = req.user._id;
+    newListing.images = { url, filename };
+    newListing.geometry = {
+        type: "Point",
+        coordinates: [77.2090, 28.6139] // Delhi (lng, lat)
+    };
+
     await newListing.save();
     req.flash("success", "New Listing Created!");
     res.redirect('/listings');
-
 };
+
+// module.exports.renderEditForm = async (req, res) => {
+//     let { id } = req.params;
+//     const listing = await Listing.findById(id);
+//     if (!listing) {
+//         req.flash("error", "Listing you requested for does not exist!")
+//         return res.redirect("/listings");
+//     }
+
+//     let originalImageUrl = listing.images.url;
+//     originalImageUrl = originalImageUrl.replace("/upload", '/upload/h_300,w_250/'); // Add width transformation for thumbnail display
+   
+//     res.render('listings/edit', {listing, originalImageUrl});
+// };
 
 module.exports.renderEditForm = async (req, res) => {
     let { id } = req.params;
-    const listing = await Listing.findById(id).populate('Owner');
+    const listing = await Listing.findById(id);
+
     if (!listing) {
-        req.flash("error", "Listing you requested for does not exist!")
+        req.flash("error", "Listing you requested for does not exist!");
         return res.redirect("/listings");
     }
-    if (!res.locals.currUser || !listing.Owner._id.equals(res.locals.currUser._id)) {
-        req.flash("error", "You are not the owner of this listing");
-        return res.redirect(`/listings/${id}`);
+
+    let originalImageUrl = "";
+
+    if (listing.images && listing.images.url) {
+        originalImageUrl = listing.images.url.replace(
+            "/upload",
+            "/upload/h_300,w_250/"
+        );
     }
-    res.render('listings/edit', {listing});
+
+    res.render("listings/edit", { listing, originalImageUrl });
 };
 
 module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
-    await Listing.findByIdAndUpdate(id, {...req.body.listing});
+    let listing = await Listing.findByIdAndUpdate(id, {...req.body.listing});
+
+    if(typeof req.file !== 'undefined') {
+    let url = req.file.path;
+    let filename = req.file.filename;
+    listing.images = { url, filename };
+    await listing.save();
+    };
     req.flash("success", "Listing Updated!");
     res.redirect(`/listings/${id}`);
 };
