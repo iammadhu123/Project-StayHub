@@ -9,18 +9,19 @@ const listingController = require("../controllers/listings.js");
 const multer = require("multer");
 const path = require("path");
 
-// Local disk storage for development (Cloudinary account has 403 upload restriction)
+// === LOCAL STORAGE (working now) ===
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, "..", "public", "uploads"));
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-        const ext = path.extname(file.originalname);
-        cb(null, file.fieldname + "-" + uniqueSuffix + ext);
+    destination: (req, file, cb) => cb(null, path.join(__dirname, "..", "public", "uploads")),
+    filename: (req, file, cb) => {
+        const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
+        cb(null, file.fieldname + "-" + unique + path.extname(file.originalname));
     }
 });
 const upload = multer({ storage });
+
+// === CLOUDINARY STORAGE (uncomment after replacing .env credentials) ===
+// const { storage } = require("../cloudConfig.js");
+// const upload = multer({ storage });
 
 router
   .route('/')

@@ -68,7 +68,7 @@ module.exports.createListing = async (req, res) => {
         const newListing = new Listing(req.body.listing);
         newListing.Owner = req.user._id;
 
-        // Local file storage: serve from /uploads/filename
+        // Local storage: serve via Express static from /uploads
         newListing.images = {
             url: `/uploads/${req.file.filename}`,
             filename: req.file.filename
@@ -103,14 +103,7 @@ module.exports.renderEditForm = async (req, res) => {
     let originalImageUrl = "";
 
     if (listing.images && listing.images.url) {
-        if (listing.images.url.includes("cloudinary.com")) {
-            originalImageUrl = listing.images.url.replace(
-                "/upload",
-                "/upload/w_250/"
-            );
-        } else {
-            originalImageUrl = listing.images.url;
-        }
+        originalImageUrl = listing.images.url;
     }
 
     res.render("listings/edit", { listing, originalImageUrl });
@@ -118,7 +111,7 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
-    let listing = await Listing.findByIdAndUpdate(id, {...req.body.listing});
+    let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
 
     if (typeof req.file !== 'undefined') {
         listing.images = {
@@ -132,7 +125,7 @@ module.exports.updateListing = async (req, res) => {
     res.redirect(`/listings/${id}`);
 };
 
-module.exports.deleteListing = async (req,res) => {
+module.exports.deleteListing = async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);
