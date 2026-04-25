@@ -1,48 +1,36 @@
 if (process.env.NODE_ENV !== "production") {
-    require('dotenv').config();
+    require("dotenv").config();
 }
 
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
-// Trim whitespace from env variables - common cause of 403 errors
-const cloudName = process.env.CLOUD_NAME ? process.env.CLOUD_NAME.trim() : '';
-const apiKey = process.env.CLOUD_API_KEY ? process.env.CLOUD_API_KEY.trim() : '';
-const apiSecret = process.env.CLOUD_API_SECRET ? process.env.CLOUD_API_SECRET.trim() : '';
-const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET ? process.env.CLOUDINARY_UPLOAD_PRESET.trim() : '';
+// Safety check for environment variables
+const cloudName = process.env.CLOUD_NAME?.trim();
+const apiKey = process.env.CLOUD_API_KEY?.trim();
+const apiSecret = process.env.CLOUD_API_SECRET?.trim();
 
+if (cloudName && apiKey && apiSecret) {
+    cloudinary.config({
+        cloud_name: cloudName,
+        api_key: apiKey,
+        api_secret: apiSecret,
+    });
 
-cloudinary.config({
-    cloud_name: cloudName,
-    api_key: apiKey,
-    api_secret: apiSecret
-});
-
-console.log(`☁️  Cloudinary config: cloud_name=${cloudName}, api_key=${apiKey ? '***' + apiKey.slice(-4) : 'MISSING'}`);
-if (uploadPreset) {
-    console.log(`☁️  Using upload preset: ${uploadPreset}`);
+    cloudinary.api.ping()
+        .then((res) => console.log("CLOUDINARY CONNECTED:", res.status))
+        .catch((err) => console.log("CLOUDINARY AUTH ERROR:", err.message));
+} else {
+    console.log("CLOUDINARY: Missing credentials in environment variables.");
 }
 
-// Build storage params - include upload preset if provided
-const storageParams = {
-    folder: 'Wanderlust_DEV',
-    allowed_formats: ['jpeg', 'png', 'jpg'],
-    resource_type: 'auto' // Auto-detect resource type (image/video)
-};
-
-// If upload preset is configured, use it (helps with restricted accounts)
-if (uploadPreset) {
-    storageParams.upload_preset = uploadPreset;
-}
-
+// Multer storage for Cloudinary (use when switching back from local storage)
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
-    params: storageParams,
+    params: {
+        folder: "Wanderlust_DEV",
+        allowedFormats: ["png", "jpg", "jpeg", "webp"],
+    },
 });
 
-module.exports = {
-    cloudinary,
-    storage,
-    uploadPreset,
-}
-
+module.exports = { cloudinary, storage };
