@@ -10,18 +10,6 @@ const multer = require("multer");
 const { storage } = require("../cloudConfig.js");
 const upload = multer({ storage });
 
-// const path = require("path");
-
-// === LOCAL STORAGE (working now) ===
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => cb(null, path.join(__dirname, "..", "public", "uploads")),
-//     filename: (req, file, cb) => {
-//         const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
-//         cb(null, file.fieldname + "-" + unique + path.extname(file.originalname));
-//     }
-// });
-// const upload = multer({ storage });
-
 router
   .route('/')
   .get(wrapAsync(listingController.index))

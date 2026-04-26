@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 
-const path = require('path'); // ejs files are in views folder
+const path = require('path'); 
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError.js');
@@ -65,10 +65,6 @@ const sessionOptions = {
         httpOnly: true,
     }
 };
-
-// app.get('/', (req, res) => {
-//     res.send('Hi, I am root');
-// });
 
 app.use(session(sessionOptions));
 app.use(flash());

@@ -1,11 +1,6 @@
 const Listing = require("../models/listing");
 const axios = require("axios");
 
-// module.exports.index = async (req, res) => {
-//     const allListings = await Listing.find({});
-//     res.render("listings/index",  {allListings});
-// };
-
 module.exports.index = async (req, res) => {
     let { category } = req.query;
     let filter = {};
@@ -86,8 +81,6 @@ module.exports.createListing = async (req, res) => {
         console.log("CLOUD FILE =", filename);
 
         const newListing = new Listing(req.body.listing);
-
-        // ONLY OWNER STANDARDIZED (kept as requested)
         newListing.Owner = req.user._id;
 
         newListing.images = {
