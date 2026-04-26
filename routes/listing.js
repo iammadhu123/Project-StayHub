@@ -19,10 +19,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// === CLOUDINARY STORAGE (uncomment after replacing .env credentials) ===
-// const { storage } = require("../cloudConfig.js");
-// const upload = multer({ storage });
-
 router
   .route('/')
   .get(wrapAsync(listingController.index))
@@ -49,4 +45,3 @@ router.get('/:id/edit', isLoggedIn, isOwner, wrapAsync(listingController.renderE
 
 
 module.exports = router;
-

@@ -24,7 +24,7 @@ if (cloudName && apiKey && apiSecret) {
     console.log("CLOUDINARY: Missing credentials in environment variables.");
 }
 
-// Multer storage for Cloudinary (use when switching back from local storage)
+
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {

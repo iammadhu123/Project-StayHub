@@ -15,6 +15,28 @@ const listingSchema = new Schema({
     price: Number,
     location: String,
     country: String,
+    // category: {
+    //   type: String,
+    //   default: "Trending",
+    //   trim: true,  //pretend unwanted spacee
+    // },
+
+    category: {
+        type: String,
+        enum: [
+            "Trending",
+            "Rooms",
+            "Iconic Cities",
+            "Mountains",
+            "Castles",
+            "Amazing Pools",
+            "Camping",
+            "Farms",
+            "Arctic",
+            "Deserts"
+        ],
+        required: true
+    },
 
     geometry: {
         type: {
@@ -49,3 +71,6 @@ listingSchema.post("findOneAndDelete", async (listing) => {
 
 const Listing = mongoose.model("Listing", listingSchema);
 module.exports = Listing;
+
+
+

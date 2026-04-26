@@ -17,7 +17,6 @@ const redIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
-// ✅ Marker with red icon
 L.marker([lat, lng], { icon: redIcon }).addTo(map)
     .bindPopup(`<b>${listing.title}</b><br>${listing.location}`)
     .openPopup();

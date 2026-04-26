@@ -1,9 +1,21 @@
 const Listing = require("../models/listing");
 const axios = require("axios");
 
+// module.exports.index = async (req, res) => {
+//     const allListings = await Listing.find({});
+//     res.render("listings/index",  {allListings});
+// };
+
 module.exports.index = async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index",  {allListings});
+    let { category } = req.query;
+    let filter = {};
+
+    if (category) {
+        filter.category = category;
+    }
+
+    const allListings = await Listing.find(filter);
+    res.render("listings/index", { allListings });
 };
 
 module.exports.renderNewForm = (req, res) => {

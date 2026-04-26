@@ -1,38 +1,143 @@
+/* ================= GLOBAL ================= */
+
 body {
     font-family: "Plus Jakarta Sans", sans-serif !important;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background: #f8fafc;
 }
 
 .container {
     flex: 1;
 }
-.navbar {
-    height: 5rem;
+
+/* ================= DESKTOP NAVBAR ================= */
+
+.desktop-nav{
+    min-height: 5rem;
     background-color: white;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
-.fa-compass {
-    color: #fe424d;
+.desktop-nav .brand-name{
+    font-size: 1.5rem !important;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: #fe424d !important;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.desktop-nav .brand-name i{
     font-size: 2rem;
 }
 
-.nav-link {
-    color: #222222;
+.desktop-nav .nav-link {
+    color: #222222 !important;
+    font-weight: 500;
+    margin-left: 0.8rem;
 }
 
-/* Footer */
+.desktop-nav .search-form {
+    display: flex;
+    width: 100%;
+    max-width: 400px;
+    white-space: nowrap;
+}
+
+.desktop-nav .search-inp {
+    border-radius: 25px !important;
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+}
+
+.desktop-nav .search-btn {
+    background-color: #fe424d !important;
+    color: #fff !important;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 25px !important;
+    border: none;
+}
+
+.desktop-nav .search-btn:hover{
+    color: white !important;
+}
+
+.desktop-nav .search-btn i {
+    margin-right: 0.5rem;
+}
+
+.desktop-nav .tax-toggle {
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+}
+ 
+.host-link{
+    text-decoration: underline !important;
+    text-underline-offset: 3px;
+    font-weight: 300;
+}
+
+.host-link:hover{
+    text-decoration: none !important;
+    color: #fe424d !important;
+}
+
+/* ================= MOBILE NAVBAR ================= */
+
+.mobile-navbar,
+.mobile-menu-dropdown{
+    display: none;
+}
+
+/* ================= FILTERS ================= */
+
+.filters-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-top: 1rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+}
+
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255,255,255,0.9);
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+}
+
+/* ================= FOOTER ================= */
+
 .f-info-links a{
     text-decoration: none;
     color: #222222;
 }
+
 .f-info-links a:hover{
     text-decoration: underline;
 }
 
 .f-info-links,
-.f-info-socials, .f-info-brand {
+.f-info-socials,
+.f-info-brand {
     width: 100%;
     display: flex;
     align-items: center;
@@ -55,10 +160,14 @@ body {
     align-items: space-evenly;
 }
 
-/* Cards */
+/* ================= LISTING CARDS ================= */
+
 .listing-card {
     border: none !important;
-    margin-bottom: 2rem'
+    margin-bottom: 2rem;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: white;
 }
 
 .card-img-top {
@@ -68,47 +177,32 @@ body {
 }
 
 .card-body {
-    padding: 0 !important;
-}
-
-.card-text p {
-    font-weight: 400 !important;
+    padding: 0.8rem !important;
 }
 
 .listing-link{
     text-decoration: none;
+    color: inherit;
 }
-
-/* Card Effect */
-/* .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-} */
 
 .card-img-overlay {
     opacity: 0;
 }
 
 .card-img-overlay:hover {
-    opacity: 0.2;
+    opacity: 0.1;
     background-color: white;
 }
 
-/* New Page */
-.add-btn {
-    background-color: #fe424d !important;
-    border: none !important;
-}
+/* ================= FORM BUTTONS ================= */
 
-/* Edit page */
-
+.add-btn,
 .edit-btn {
     background-color: #fe424d !important;
     border: none !important;
 }
 
-/* Show Page */
+/* ================= SHOW PAGE ================= */
 
 .show-img {
     height: 30vh !important;
@@ -116,6 +210,7 @@ body {
 
 .btns {
     display: flex;
+    gap: 1rem;
 }
 
 .show-card {
@@ -123,11 +218,7 @@ body {
     padding-right: 0;
 }
 
-/* map */
-/* #map {
-    height: 400px;
-    width: 80vh;
-} */
+/* ================= EDIT IMAGE ================= */
 
 .edit-img {
     width: 100%;
@@ -135,4 +226,111 @@ body {
     height: 200px;
     object-fit: cover;
     border-radius: 10px;
+}
+
+/* ================= MAP ================= */
+
+/*
+#map {
+    height: 400px;
+    width: 80vh;
+}
+*/
+
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media(max-width:768px){
+
+    /* desktop nav hide */
+    .desktop-nav{
+        display: none !important;
+    }
+
+    /* mobile nav show */
+    .mobile-navbar{
+        width: 100%;
+        background: white;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #ececec;
+        z-index: 1000;
+    }
+
+    .mobile-brand{
+        color: #fe424d;
+        font-size: 2rem;
+        text-decoration: none;
+    }
+
+    .mobile-search-form{
+        flex: 1;
+        margin: 0 1rem;
+        background: white;
+        border-radius: 40px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        max-width: 270px;
+    }
+
+    .mobile-search-inp{
+        border: none;
+        outline: none;
+        flex: 1;
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .mobile-search-btn{
+        background: #fe424d;
+        color: white;
+        border: none;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        margin-right: 4px;
+    }
+
+    .menu-btn{
+        background: none;
+        border: none;
+        font-size: 1.7rem;
+    }
+
+    .mobile-menu-dropdown{
+        display: block;
+        background: white;
+        padding: 1rem;
+        border-bottom: 1px solid #ececec;
+    }
+
+    .menu-link{
+        display: block;
+        text-decoration: none;
+        color: #222;
+        margin-bottom: 0.8rem;
+        font-weight: 500;
+    }
+
+    .mobile-menu-dropdown .tax-toggle{
+        margin: 0.8rem 0;
+    }
+
+    /* cards responsive */
+    .listing-card{
+        margin-bottom: 1.5rem;
+    }
+
+    .card-img-top{
+        height: 250px !important;
+    }
+
+    /* footer responsive */
+    .f-info{
+        height: auto;
+        padding: 1rem 0;
+    }
 }

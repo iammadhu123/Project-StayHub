@@ -7,7 +7,8 @@ module.exports.listingSchema = Joi.object({
         description: Joi.string().required(),
         location: Joi.string().required(),
         country: Joi.string().required(),
-        price: Joi.number().required().min(0)
+        price: Joi.number().required().min(0),
+        category: Joi.string().required()
     }).required()
 });
 // Review Validation Schema
