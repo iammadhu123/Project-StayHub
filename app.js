@@ -40,7 +40,7 @@ app.set('views', path.join(__dirname, 'views')); // Set the views directory
 app.use(express.urlencoded({extended: true})); // To parse form data
 app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
-app.use(express.static(path.join(__dirname, "/public")))
+app.use(express.static(path.join(__dirname, "public")))
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
