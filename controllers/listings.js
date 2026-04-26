@@ -43,65 +43,78 @@ module.exports.showListing = async (req, res) => {
 };
 
 module.exports.createListing = async (req, res) => {
-    try {
-        console.log("BODY =", req.body);
-        console.log("FILE =", req.file);
+    let url = req.file.path;
+    let filename = req.file.filename;
+    console.log(url, "..", filename);
+    
+    const newListing = new Listing(req.body.listing);
+    newListing.owner = req.user._id;
+    newListing.images = {url, filename};
+    await newListing.save();
+    req.flash("success", "New Listing Created!");
+    res.redirect(`/listings`);
+}
 
-        if (!req.file) {
-            req.flash("error", "Please select an image!");
-            return res.redirect("/listings/new");
-        }
+// module.exports.createListing = async (req, res) => {
+//     try {
+//         console.log("BODY =", req.body);
+//         console.log("FILE =", req.file);
 
-        const fullLocation = `${req.body.listing.location}, ${req.body.listing.country}`;
+//         if (!req.file) {
+//             req.flash("error", "Please select an image!");
+//             return res.redirect("/listings/new");
+//         }
 
-        let lat = 28.6139;
-        let lng = 77.2090;
+//         const fullLocation = `${req.body.listing.location}, ${req.body.listing.country}`;
 
-        try {
-            const geoResponse = await axios.get("https://nominatim.openstreetmap.org/search", {
-                params: {
-                    q: fullLocation,
-                    format: "json",
-                    limit: 1
-                },
-                headers: {
-                    "User-Agent": "StayProject/1.0"
-                }
-            });
+//         let lat = 28.6139;
+//         let lng = 77.2090;
 
-            if (geoResponse.data.length > 0) {
-                lat = parseFloat(geoResponse.data[0].lat);
-                lng = parseFloat(geoResponse.data[0].lon);
-            }
-        } catch (geoErr) {
-            console.log("Geo error:", geoErr.message);
-        }
+//         try {
+//             const geoResponse = await axios.get("https://nominatim.openstreetmap.org/search", {
+//                 params: {
+//                     q: fullLocation,
+//                     format: "json",
+//                     limit: 1
+//                 },
+//                 headers: {
+//                     "User-Agent": "StayProject/1.0"
+//                 }
+//             });
 
-        const newListing = new Listing(req.body.listing);
-        newListing.Owner = req.user._id;
+//             if (geoResponse.data.length > 0) {
+//                 lat = parseFloat(geoResponse.data[0].lat);
+//                 lng = parseFloat(geoResponse.data[0].lon);
+//             }
+//         } catch (geoErr) {
+//             console.log("Geo error:", geoErr.message);
+//         }
 
-        // Local storage: serve via Express static from /uploads
-        newListing.images = {
-            url: `/uploads/${req.file.filename}`,
-            filename: req.file.filename
-        };
+//         const newListing = new Listing(req.body.listing);
+//         newListing.Owner = req.user._id;
 
-        newListing.geometry = {
-            type: "Point",
-            coordinates: [lng, lat]
-        };
+//         // Local storage: serve via Express static from /uploads
+//         newListing.images = {
+//             url: `/uploads/${req.file.filename}`,
+//             filename: req.file.filename
+//         };
 
-        await newListing.save();
+//         newListing.geometry = {
+//             type: "Point",
+//             coordinates: [lng, lat]
+//         };
 
-        req.flash("success", "New Listing Created!");
-        res.redirect(`/listings/${newListing._id}`);
+//         await newListing.save();
 
-    } catch (err) {
-        console.log("FINAL CREATE ERROR =", err);
-        req.flash("error", err.message);
-        res.redirect("/listings/new");
-    }
-};
+//         req.flash("success", "New Listing Created!");
+//         res.redirect(`/listings/${newListing._id}`);
+
+//     } catch (err) {
+//         console.log("FINAL CREATE ERROR =", err);
+//         req.flash("error", err.message);
+//         res.redirect("/listings/new");
+//     }
+// };
 
 module.exports.renderEditForm = async (req, res) => {
     let { id } = req.params;

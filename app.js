@@ -2,7 +2,6 @@ if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 };
 
-
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -89,27 +88,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// app.get('/demouser', async(req, res) => {
-//     let fakeUser = new User({
-//         email: "student@gmail.com",
-//         username: 'iammadhu'
-//     });
-    
-//     let registeredUser = await User.register(fakeUser, 'helloworld');
-//     res.send(registeredUser);
-// })
-
-
-// const validateListing = (req, res, next) => {
-//     let {error} = listingSchema.validate(req.body);
-//     if(error) {
-//         let errMsg = error.details.map((el) => el.message).join(",")
-//         throw new ExpressError(400, errMsg);
-//     } else {
-//         next();
-//     }
-// }
-
 app.use("/listings", listingRouter);
 app.use('/listings/:id/reviews', reviewRouter);
 app.use('/', userRouter);
@@ -117,12 +95,6 @@ app.use('/', userRouter);
 app.use((req, res, next) => {
     next(new ExpressError(404, 'Page not found'));
 });
-
-// app.use((err, req, res, next) => {
-//     const { status = 500 } = err;
-//     if (!err.message) err.message = 'Something went wrong!';
-//     res.status(status).render('error', { err });
-// });
 
 app.use((err, req, res, next) => {
     const status = err.statusCode || err.status || 500;
