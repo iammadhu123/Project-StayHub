@@ -44,7 +44,7 @@ StayHub is a full-stack web application that allows users to discover, create, a
 - Express.js
 
 ### Database
-- MongoDB
+- MongoDB Atlas
 - Mongoose ODM
 
 ### Authentication
