@@ -1,28 +1,51 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const taxSwitch = document.getElementById("flexSwitchCheckDefault");
+
+    const desktopSwitch = document.getElementById("flexSwitchCheckDefault");
+    const mobileSwitch = document.getElementById("mobileTaxSwitch");
     const taxBox = document.querySelector(".tax-toggle");
 
-    if (taxSwitch) {
-        taxSwitch.addEventListener("change", () => {
-            const allPrices = document.querySelectorAll(".listing-price");
-            const allTaxInfo = document.querySelectorAll(".tax-info");
+    function updatePrices(isChecked) {
+        const allPrices = document.querySelectorAll(".listing-price");
+        const allTaxInfo = document.querySelectorAll(".tax-info");
 
-            allPrices.forEach(priceEl => {
-                const basePrice = Number(priceEl.dataset.price);
+        allPrices.forEach(priceEl => {
+            const basePrice = Number(priceEl.dataset.price);
 
-                if (taxSwitch.checked) {
-                    const totalPrice = Math.round(basePrice * 1.18);
-                    priceEl.innerHTML = `&#8377; ${totalPrice.toLocaleString("en-IN")}`;
-                } else {
-                    priceEl.innerHTML = `&#8377; ${basePrice.toLocaleString("en-IN")}`;
-                }
-            });
+            if (isChecked) {
+                const totalPrice = Math.round(basePrice * 1.18);
+                priceEl.innerHTML = `&#8377; ${totalPrice.toLocaleString("en-IN")}`;
+            } else {
+                priceEl.innerHTML = `&#8377; ${basePrice.toLocaleString("en-IN")}`;
+            }
+        });
 
-            allTaxInfo.forEach(info => {
-                info.style.display = taxSwitch.checked ? "inline" : "none";
-            });
+        allTaxInfo.forEach(info => {
+            info.style.display = isChecked ? "inline" : "none";
+        });
 
-            taxBox.classList.toggle("active", taxSwitch.checked);
+        if (taxBox) {
+            taxBox.classList.toggle("active", isChecked);
+        }
+    }
+
+    // Desktop toggle
+    if (desktopSwitch) {
+        desktopSwitch.addEventListener("change", () => {
+            updatePrices(desktopSwitch.checked);
+
+            // sync mobile
+            if (mobileSwitch) mobileSwitch.checked = desktopSwitch.checked;
         });
     }
+
+    // Mobile toggle
+    if (mobileSwitch) {
+        mobileSwitch.addEventListener("change", () => {
+            updatePrices(mobileSwitch.checked);
+
+            // sync desktop
+            if (desktopSwitch) desktopSwitch.checked = mobileSwitch.checked;
+        });
+    }
+
 });
