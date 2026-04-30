@@ -28,6 +28,8 @@ body {
     display: flex;
     align-items: center;
     gap: 4px;
+    margin-left: 2rem;
+
 }
 
 .desktop-nav .brand-name i{
@@ -77,15 +79,16 @@ body {
     align-items: center;
 }
  
-.host-link{
-    text-decoration: underline !important;
-    text-underline-offset: 3px;
-    font-weight: 300;
-}
 
 .host-link:hover{
-    text-decoration: none !important;
     color: #fe424d !important;
+    box-shadow: #fe424d 0px 1px 5px;
+    border-radius: 8px;
+}
+
+.card-img-top {
+    height: 300px;
+    object-fit: cover;
 }
 
 /* MOBILE NAVBAR */

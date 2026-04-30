@@ -38,7 +38,7 @@
             <p>Castles</p>
         </a>
 
-        <a href="/listings?category=Amazing Pools" class="filter">
+        <a href="/listings?category=Pools" class="filter">
             <div><i class="fa-solid fa-person-swimming"></i></div>
             <p>Pools</p>
         </a>
@@ -107,8 +107,12 @@
                     <p class="card-text">
                         <b><%= listing.title %></b>
                         <br>
-                        &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
-                        <i class="tax-info">&nbsp;+18% GST</i>
+
+                        <span class="listing-price" data-price="<%= listing.price %>">
+                            &#8377; <%= listing.price.toLocaleString("en-IN") %>
+                        </span> / night
+
+                        <span class="tax-info">incl. GST</span>
                     </p>
                 </div>
 
@@ -120,23 +124,3 @@
 
 </div>
 
-<script>
-    // Tax toggle
-    let taxSwitch = document.getElementById('flexSwitchCheckDefault');
-
-    taxSwitch.addEventListener('click', () => {
-        let taxInfo = document.getElementsByClassName("tax-info");
-
-        for (let info of taxInfo) {
-            info.style.display = (info.style.display === "inline") ? "none" : "inline";
-        }
-    });
-
-    // Scroll filters
-    function scrollFilters(value) {
-        document.getElementById("filters").scrollBy({
-            left: value,
-            behavior: "smooth"
-        });
-    }
-</script>

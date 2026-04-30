@@ -1,6 +1,7 @@
 <%- layout("/layouts/boilerplate") %>
 
 <script>
+    let listing = <%- JSON.stringify(listing) %>;
     let coordinates = "<%- JSON.stringify(listing.geometry ? listing.geometry.coordinates : [77.2090,28.6139]) %>";
     coordinates = JSON.parse(coordinates);
 </script>
@@ -12,17 +13,13 @@
     </div>
 
     <div class="card col-6 offset-3 show-card listing-card">
-        <img 
-            src="<%= listing.images?.url %>" 
-            class="card-img-top show-img" 
-            alt="listing_image"
-        />
+
+        <img src="<%= listing.images.url %>" class="card-img-top">
 
         <div class="card-body">
             <p class="card-text">
-                Owned by <i><b>@<%= listing.Owner ? listing.Owner.username : "Unknown" %></b></i>
+                Hosted by <i><b>@<%= listing.Owner ? listing.Owner.username : "Unknown" %></b></i>
             </p>
-
             <p class="card-text">
                 <%= listing.description %>
             </p>
@@ -32,12 +29,9 @@
             </p>
 
             <p class="card-text">
-                <%= listing.location %>
+                <%= listing.location %>, <%= listing.country %>
             </p>
-
-            <p class="card-text">
-                <%= listing.country %>
-            </p>
+            
         </div>
     </div>
 

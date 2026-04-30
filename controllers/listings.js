@@ -2,20 +2,30 @@ const Listing = require("../models/listing");
 const axios = require("axios");
 
 module.exports.index = async (req, res) => {
-    let { category } = req.query;
+    let { category, q } = req.query;
     let filter = {};
 
     if (category) {
         filter.category = category;
     }
 
+    if (q) {
+        filter.$or = [
+            { title: { $regex: q, $options: "i" } },
+            { location: { $regex: q, $options: "i" } },
+            { country: { $regex: q, $options: "i" } }
+        ];
+    }
+
     const allListings = await Listing.find(filter);
     res.render("listings/index", { allListings });
 };
 
+
 module.exports.renderNewForm = (req, res) => {
     res.render('listings/new.ejs');
 };
+
 
 module.exports.showListing = async (req, res) => {
     let { id } = req.params;
@@ -38,6 +48,7 @@ module.exports.showListing = async (req, res) => {
     console.log(listing);
     res.render("listings/show.ejs", { listing });
 };
+
 
 module.exports.createListing = async (req, res) => {
     try {
@@ -105,6 +116,7 @@ module.exports.createListing = async (req, res) => {
     }
 };
 
+
 module.exports.renderEditForm = async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
@@ -123,13 +135,14 @@ module.exports.renderEditForm = async (req, res) => {
     res.render("listings/edit", { listing, originalImageUrl });
 };
 
+
 module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
 
-    if (typeof req.file !== 'undefined') {
+    if (req.file) {
         listing.images = {
-            url: `/uploads/${req.file.filename}`,
+            url: req.file.path,  
             filename: req.file.filename
         };
         await listing.save();

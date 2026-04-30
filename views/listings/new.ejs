@@ -35,8 +35,8 @@
                     <label for="price" class="form-label">Price</label>
                     <input 
                         name="listing[price]" 
-                        placeholder="1200" 
-                        
+                        placeholder="1500" 
+                        type="number"
                         class="form-control" 
                         required
                     />
@@ -57,7 +57,7 @@
 
             <div class="mb-3">
               <label for="category" class="form-label">Category</label>
-              <select name="listing[category]" class="form-control" required>
+              <select id="category" name="listing[category]" class="form-control" required>
                   <option value="">Select Category</option>
                   <option value="Trending">Trending</option>
                   <option value="Rooms">Rooms</option>
@@ -71,11 +71,13 @@
                   <option value="Beach">Beach</option>
                   <option value="Arctic">Arctic</option>
                   <option value="Deserts">Deserts</option>
+                  <option value="Luxury">Luxury</option>
               </select>
               <div class="invalid-feedback">Please select a category.</div>
             </div>
         
             <button class="btn btn-dark add-btn mt-3">Add</button>
+            <br><br>
             
         </form>
     </div>

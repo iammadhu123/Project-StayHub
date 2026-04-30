@@ -3,12 +3,12 @@
   <div class="container-fluid">
 
     <a class="brand-name" href="/listings">
-      <i class="fa-regular fa-compass"></i>StayHub
+      <i class="fa-brands fa-airbnb"></i> StayHub
     </a>
 
     <div class="navbar-nav ms-auto">
-      <form class="search-form my-2" role="search">
-        <input class="form-control me-2 search-inp" type="search" placeholder="Search destinations">
+      <form class="search-form my-2" role="search" method="GET" action="/listings">
+        <input name="q" class="form-control me-2 search-inp" type="search" placeholder="Search destinations">
         <button class="btn search-btn" type="submit">
           <i class="fa-solid fa-magnifying-glass"></i>Search
         </button>
@@ -16,13 +16,13 @@
     </div>
 
     <div class="navbar-nav ms-auto align-items-center">
-      <a class="nav-link host-link" href="/listings/new">StayHub your place</a>
+      <a class="nav-link host-link" href="/listings/new">Becaome a Host</a>
 
       <div class="tax-toggle">
         <div class="form-check-reverse form-switch">
           <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
           <label class="form-check-label" for="flexSwitchCheckDefault">
-            Display tax
+            Display total price (incl. GST)
           </label>
         </div>
       </div>
@@ -45,8 +45,8 @@
         <i class="fa-regular fa-compass"></i>
     </a>
 
-    <form class="mobile-search-form" role="search">
-        <input type="search" class="mobile-search-inp" placeholder="Search Destinations">
+    <form class="mobile-search-form" role="search" method="GET" action="/listings">
+        <input name="q" type="search" class="mobile-search-inp" placeholder="Search Destinations">
         <button class="mobile-search-btn" type="submit">
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>

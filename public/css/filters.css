@@ -1,20 +1,25 @@
-.filter-wrapper {
-    position: relative;
+.filter-wrapper{
+    position: sticky;
+    top: 80px;
+    z-index: 900;
     display: flex;
     align-items: center;
-    margin-top: 1rem;
+    margin-top: 0.3rem;
     margin-bottom: 0.4rem;
+    padding: 0.7rem 1.7rem;
+    background: white;
+    border-bottom: 1px solid #f1f1f1;
 }
 
-#filters {
+#filters{
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
     white-space: nowrap;
     align-items: center;
-    justify-content: center;
     width: 100%;
-    padding: 0 2.8rem;
+    gap: 0.11rem;
+    padding: 0;
 }
 
 #filters::-webkit-scrollbar {
@@ -94,6 +99,13 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     cursor: pointer;
     top: 45%;
+    display: none;
+}
+
+.scroll-btn.visible {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .left-btn {
