@@ -1,8 +1,13 @@
+if (typeof coordinates === "string") {
+    coordinates = JSON.parse(coordinates);
+}
 
 const lng = coordinates[0];
 const lat = coordinates[1];
 
-const map = L.map("map").setView([lat, lng], 9);
+const position = [lat, lng];
+
+const map = L.map("map").setView(position, 9);
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap"
@@ -17,6 +22,7 @@ const redIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
-L.marker([lat, lng], { icon: redIcon }).addTo(map)
+L.marker(position, { icon: redIcon })
+    .addTo(map)
     .bindPopup(`<b>${listing.title}</b><br>${listing.location}`)
     .openPopup();

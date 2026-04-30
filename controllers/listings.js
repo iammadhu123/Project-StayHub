@@ -138,15 +138,69 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
-    let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+    let listing = await Listing.findById(id);
+
+    // store old values FIRST
+    const oldLocation = listing.location;
+    const oldCountry = listing.country;
+
+    const normalize = (str) => (str || "").trim().toLowerCase();
+
+    const locationChanged =
+        normalize(req.body.listing.location) !== normalize(oldLocation);
+
+    const countryChanged =
+        normalize(req.body.listing.country) !== normalize(oldCountry);
+
+    listing.title = req.body.listing.title;
+    listing.description = req.body.listing.description;
+    listing.price = req.body.listing.price;
+    listing.location = req.body.listing.location;
+    listing.country = req.body.listing.country;
+    listing.category = req.body.listing.category;
 
     if (req.file) {
         listing.images = {
-            url: req.file.path,  
+            url: req.file.path,
             filename: req.file.filename
         };
-        await listing.save();
     }
+
+    if (locationChanged || countryChanged) {
+        const fullLocation = `${listing.location}, ${listing.country}`;
+
+        try {
+            const geoResponse = await axios.get(
+                "https://nominatim.openstreetmap.org/search",
+                {
+                    params: {
+                        q: fullLocation,
+                        format: "json",
+                        limit: 1
+                    },
+                    headers: {
+                        "User-Agent": "StayHub/1.0"
+                    }
+                }
+            );
+
+            if (geoResponse.data.length > 0) {
+                const lat = parseFloat(geoResponse.data[0].lat);
+                const lng = parseFloat(geoResponse.data[0].lon);
+
+                listing.geometry = {
+                    type: "Point",
+                    coordinates: [lng, lat]
+                };
+
+                console.log("Updated coordinates:", [lng, lat]);
+            }
+        } catch (geoErr) {
+            console.log("Geo Error =", geoErr.message);
+        }
+    }
+
+    await listing.save();
 
     req.flash("success", "Listing Updated!");
     res.redirect(`/listings/${id}`);
@@ -159,3 +213,5 @@ module.exports.deleteListing = async (req, res) => {
     req.flash("success", "Listing deleted!");
     res.redirect('/listings');
 };
+
+
