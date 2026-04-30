@@ -1,4 +1,4 @@
-# 🏡 StayHub – Luxury Stays & Unique Getaways
+# StayHub – Luxury Stays & Unique Getaways
 
 StayHub is a full-stack web application that allows users to discover, create, and review luxury stays and unique travel experiences around the world. Built with Node.js, Express, MongoDB, and EJS, it provides a smooth and responsive experience with authentication, maps, and image uploads.
 
@@ -18,15 +18,15 @@ StayHub is a full-stack web application that allows users to discover, create, a
 
 ## 🚀 Features
 
-- 🔍 Search listings by title, location, or country
-- 🏷️ Filter listings by category
-- 🏨 Create, edit, and delete listings
-- 👤 User authentication (Register/Login/Logout)
-- ⭐ Add reviews and ratings
-- 🗺️ Interactive map with geo-location
-- 📸 Image upload using Cloudinary
-- 🔐 Protected routes for logged-in users
-- 📱 Fully responsive design
+- Search listings by title, location, or country
+- Filter listings by category
+- Create, edit, and delete listings
+- User authentication (Register/Login/Logout)
+- Add reviews and ratings
+- Interactive map with geo-location
+- Image upload using Cloudinary
+- Protected routes for logged-in users
+- Fully responsive design
 
 ---
 
@@ -164,23 +164,6 @@ The app will run at: **http://localhost:8080**
 - Cloudinary integration for image storage
 - Secure file upload handling
 - Image URL and filename saved in database
-
----
-
-## 📌 Future Improvements
-
-- Payment integration
-- Booking system
-- Real-time chat system
-- Admin dashboard
-- Wishlist feature
-
----
-
-## 👨‍💻 Author
-
-**Madhu Yadav**
-- GitHub: [https://github.com/iammadhu123](https://github.com/iammadhu123)
 
 ---
 
