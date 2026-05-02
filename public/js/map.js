@@ -7,13 +7,13 @@ const lat = coordinates[1];
 
 const position = [lat, lng];
 
-const map = L.map("map").setView(position, 9);
+const map = L.map("map").setView(position, 10);
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap"
 }).addTo(map);
 
-const redIcon = new L.Icon({
+const redIcon = L.icon({
     iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
     shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
     iconSize: [25, 41],
@@ -24,5 +24,5 @@ const redIcon = new L.Icon({
 
 L.marker(position, { icon: redIcon })
     .addTo(map)
-    .bindPopup(`<b>${listing.title}</b><br>${listing.location}`)
+    .bindPopup("<b>Stay Location</b>")
     .openPopup();
